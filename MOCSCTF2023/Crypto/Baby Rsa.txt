@@ -1,0 +1,13 @@
+假設m就是flag,
+a char = 1 byte = 8 bits = 2^8
+m^e 會是 2^8^(length of m)^e = 2^(8*length of m*e)
+假設 n = 2^x, then x = log2(n), 上網找個log calculator能算出 x 大概是 1024
+那就是說如果m < 26的話, 8*25*5 = 1000 < 1024
+m^e < n的話, m^e % n 就等於m^e了
+既然是baby, 就假設真的是這樣吧
+那c = m^e % n = m^e, m = c ^ 1/5
+又找個calculator做big int 5th root
+出來的m是28924963263624596892129458524018008083087123588063613
+然後我上網copy了一段python的hex decode, bingo
+  byte_array = bytearray.fromhex('{:02x}'.format(m))
+  print(byte_array.decode())
