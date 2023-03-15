@@ -1,0 +1,11 @@
+1) 在browser打開網站, 似乎有些東西我們沒輸入, 所以出了undefined
+2) 下載並閱讀app.js, 發現eval(req.query.poc), 那就是Remote Code Execution
+3) 先嘗試一個錯誤的, 訪問https://34.96.199.159:48113/?poc=require, 果然出了Hacker!
+4) 那現在就是「如何避開使用require」，因為無法使用require('child_process').exec('ls')
+5) 再仔細看一下app.js, regular expression的部份, 在require前面有一個^, 代表require是文字的開始, 那就嘗試加個space, 訪問https://34.96.199.159:48113/?poc= require('child_process').exec('ls')
+6) 能跑, 但console.log出來的是object, 那就是nodejs範疇的知識了, exec是把result放到callback裡面, 那就用一個同步的版本, execSync. bingo, 能看見ls的結果
+7) 發現有個file叫flag, 把command部份改成cat flag, 但是沒有權限.
+8) 有個readflag.c也很可疑, cat readflag.c看看, 看見輸入give me the flag作為參數的話, 這個程序會open flag那個file
+9) 將command改成./readflag give me the flag, 成功
+
+心得: 真係識架, 但係唯一識就係呢條
