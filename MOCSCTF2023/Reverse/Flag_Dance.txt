@@ -1,0 +1,9 @@
+1) 打開scratch.mit.edu的網頁後, 隨便輸入不同的4位digits, 會發現人物動作一樣, 所以flag應該與該動作無關
+2) 點擊see inside, 會進到code頁面
+3) 查看後發現中間flag是由一個loop(repeat length of memory)組成, 邏輯主要是chars[memory[i] / input]
+4) 從下面code判斷say是相當於print, 所以從左邊搬一個say出來, 再搬一個memory到say後面, 然後點擊綠旗執行
+5) 發現print出來memory那段字會很快消失, 所以再搬一個wait 60 seconds到say memory下面, 再次點擊綠旗執行, 然後截圖記錄那串數字
+80522 379443 92910 378243 18582 ...省略
+6) 根據發現的邏輯, 每組數字都要除以用戶輸入的4位數, 而普遍情況下flag的格式是MOCSCTF{xxxx}, 可先假設第一個數字80522代表M.
+7) 因為不認識scratch的coding, 所以要猜測M代表什麼. 由於scratch是給小朋友用的, 先嘗試M為13, 發現80522/13能整除為6194
+8) 然後重新輸入6194, 獲得flag mocsctf{y0u_can_d0_rever_5e_0r_brutef0rce}
