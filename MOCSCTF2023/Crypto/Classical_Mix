@@ -1,0 +1,4 @@
+1) 根據指示, 先寫段code將.和-倒轉
+2) 然後google找一個morse code decoder, 獲得R0LXTVDOWNTHAWXTESTWDW15NJQRV3V5BXVSFQ== # LOWERCASE POSITIONS : 2,6,9,10,12,14,15,16,18,20,25,27,32,35,36
+3) 由0開始, 將第2, 6, 9 ...格的字母改為小寫, base64 decode獲得GIWMWNZ{Gilmy+Vumy64+Wuymul}
+4) 將GIWMWNZ和MOCSCTF比較一下, 就會發現是ROT6, bingo
