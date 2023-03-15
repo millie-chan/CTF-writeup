@@ -1,0 +1,5 @@
+strings Mona_Lisa.png | grep flag獲得
+flag1=MOCSCTF{h1de_@nd
+IDATflag3=2022_t0_2023}
+
+flag2找不到, 試過stegsolve也沒有
