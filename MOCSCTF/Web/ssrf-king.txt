@@ -1,0 +1,4 @@
+https://34.96.199.159:48124/search?url=file:///etc/passwd
+
+就是SSRF, read file也行, 但就是不知道如何繼續, 難道真的是Reverse Shell嗎? 這個分數就reverse shell不太像呀
+類似: https://trevorsaudi.medium.com/ssrf-to-gaining-rce-rootme-ssrf-box-31b7d0e5ad08
