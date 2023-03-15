@@ -1,0 +1,5 @@
+右邊按鈕是phpinfo, 不知道該看什麼
+左邊按鈕會出一幅圖
+https://34.96.199.159:48115/api.php?img=https://p1.itc.cn/images01/20230207/8a9e552d8ec047acaa638da34cea9ed1.png&username=test
+
+訪問 https://34.96.199.159:48115/api.php?img=a#.png&username=test, 返回"Must get png file!!" 那應該是#號comment了後面的東西, 導致無法辨認, 但不知道該怎麼繼續
