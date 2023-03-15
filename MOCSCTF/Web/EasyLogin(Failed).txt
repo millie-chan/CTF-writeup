@@ -1,0 +1,7 @@
+1) 訪問網站, 404. 那就用java decompiler(例如jd-gui)打開那個jar, 或者上網搜一個java online decompiler
+2) 根據web development的經驗, javax和org普遍是library/framework, 自己寫的通常是com下面的, 獲得兩個資訊, 首先這個是關於XXE(XML External Entity Injection)的, 其次是testController就是主要的code
+  @RequestMapping(value = {"/api/login"}, produces = {"application/xml;charset=UTF-8"})
+  意思是path是/api/login, 這個controller會返回xml作為結果
+3) 再研究一下代碼, request的content type需要是xml, 但同時body不能有system, file, gopher, ftp, jar, netdoc, //, http
+4) 沒了, 我唯一知道的XXE知識就是<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/passwd'>]><root>&test;</root>
+頂多就是換一個filter, 但封了SYSTEM我就不會了, 在等官方出write up
