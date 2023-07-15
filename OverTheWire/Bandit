@@ -111,4 +111,30 @@ cat /etc/bandit_pass/bandit14
 cat /etc/bandit_pass/bandit14 | nc localhost 30000
 # jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
 
+# Bandit Level 15 → Level 16
+ssh bandit15@bandit.labs.overthewire.org -p 2220
+echo "jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt" | openssl s_client -ign_eof localhost:30001
+# JQttfApK4SeyHwDlI9SXGR50qclOAil1
 
+# Bandit Level 16 → Level 17
+ssh bandit16@bandit.labs.overthewire.org -p 2220
+# fast in nmap but need to try five ports one by one
+nmap -sT -v localhost -p 31000-32000
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | nc localhost 31046
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | nc localhost 31518
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | nc localhost 31691
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | nc localhost 31790
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | nc localhost 31960
+# slow in nmap but know 31790 is the correct port immediately
+nmap -sV localhost -p 31000-32000
+# 31518 and 31790 have no reponse, which means probably they are SSL
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | openssl s_client localhost:31518
+# nothing returned
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | openssl s_client localhost:31790
+# found something
+echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | openssl s_client -ign_eof localhost:31790
+# got the cert
+
+# Bandit Level 17 → Level 18
+# create a new file and copy the cert content in it
+ssh bandit14@bandit.labs.overthewire.org -p 2220 -i <file>
