@@ -1,0 +1,114 @@
+# Always save the last password you retrieved unless you want to do it all over again
+# Or you should finish all levels at once
+# Always ls -al
+
+# Bandit Level 0 → Level 1
+ssh bandit0@bandit.labs.overthewire.org -p 2220 "cat readme"
+# NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
+
+# Bandit Level 1 → Level 2
+ssh bandit1@bandit.labs.overthewire.org -p 2220 "cat './-'"
+# NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
+
+# Bandit Level 2 → Level 3
+ssh bandit2@bandit.labs.overthewire.org -p 2220 "cat './spaces in this filename'"
+# aBZ0W5EmUfAf7kHTQeOwd8bauFJ2lAiG
+
+# Bandit Level 3 → Level 4
+ssh bandit3@bandit.labs.overthewire.org -p 2220
+ls -al inhere
+cat inhere/.hidden
+# 2EW7BBsr6aMMoJ2HjW067dm8EgX26xNe
+
+# Bandit Level 4 → Level 5
+ssh bandit4@bandit.labs.overthewire.org -p 2220
+cd inhere
+ls -al
+file ./-file0*
+# cat the only one which is ASCII TEXT
+cat ./-file07
+# lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR
+
+# Bandit Level 5 → Level 6
+ssh bandit5@bandit.labs.overthewire.org -p 2220
+cd inhere 
+ls -al
+find -readable -size 1033c ! -executable
+cat ./maybehere07/.file2
+# P4L4vucdmLnm8I7Vl7jG1ApGSfjYKqJU
+
+# Bandit Level 6 → Level 7
+ssh bandit6@bandit.labs.overthewire.org -p 2220
+find / -user bandit7 -group bandit6 -size 33c 2> /dev/null
+cat /var/lib/dpkg/info/bandit7.password
+# z7WtoNQU2XfjmMtWA8u5rN4vzqu4v99S
+
+# Bandit Level 7 → Level 8
+ssh bandit7@bandit.labs.overthewire.org -p 2220
+cat data.txt | grep millionth
+# TESKZC0XvTetK0S9xNwm25STk5iWrBvP
+
+# Bandit Level 8 → Level 9
+ssh bandit8@bandit.labs.overthewire.org -p 2220
+cat data.txt | sort | uniq -cu
+# EN632PlfYiZbn3PhVK3XOGSlNInNE00t
+
+# Bandit Level 9 → Level 10
+ssh bandit9@bandit.labs.overthewire.org -p 2220
+strings data.txt | grep ==
+# G7w8LIi6J3kTb8A7j9LgrywtEUlyyp6s
+
+# Bandit Level 10 → Level 11
+ssh bandit10@bandit.labs.overthewire.org -p 2220 "base64 -d data.txt"
+# 6zPeziLdR2RKNdNYFNb6nVCKzphlXHBM
+
+# Bandit Level 11 → Level 12
+ssh bandit11@bandit.labs.overthewire.org -p 2220
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+# JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv
+
+# Bandit Level 12 → Level 13
+ssh bandit12@bandit.labs.overthewire.org -p 2220
+cp data.txt /tmp/myname456
+cd /tmp/myname456
+xxd -r data.txt > test
+file test
+mv test data.gz
+gzip -d data.gz
+file data
+bzip2 -d data
+file data.out
+mv data.out data.gz
+gzip -d data.gz
+file data
+mv data data.tar
+tar -xf data.tar
+ls -al
+file data5.bin
+mv data5.bin data5.tar
+tar -xf data5.tar
+ls -al
+file data6.bin
+bzip2 -d data6.bin
+file data6.bin.out
+mv data6.bin.out data6.tar
+tar -xf data6.tar
+ls -al
+file data8.bin
+mv data8.bin data8.gz
+gzip -d data8.gz
+file data8
+cat data8
+# wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw
+
+# Bandit Level 13 → Level 14
+ssh bandit13@bandit.labs.overthewire.org -p 2220
+ls -al
+ssh bandit14@bandit.labs.overthewire.org -p 2220 -i sshkey.private
+# Bandit Level 14 → Level 15
+cat /etc/bandit_pass/bandit14
+# fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq
+cat /etc/bandit_pass/bandit14 | nc localhost 30000
+# jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
+
+
