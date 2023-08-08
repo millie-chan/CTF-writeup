@@ -223,3 +223,128 @@ cat /etc/bandit_pass/bandit24 > /tmp/tmp123/password
 chmod +x test.sh
 cat /tmp/tmp123/password
 # VAfGXJ1PBSsPSnvsjI8p759leLZ9GGar
+
+# Bandit Level 24 → Level 25
+ssh bandit24@bandit.labs.overthewire.org -p 2220
+# create a script in /tmp folder
+#!/bin/bash
+for i in {0000..9999}
+do
+echo "VAfGXJ1PBSsPSnvsjI8p759leLZ9GGar $i"
+done | nc localhost 30002 | grep password
+chmod +x bf.sh
+./bf.sh
+# p7TaowMYrmu23Ol8hiZh9UvD0O9hpx8d
+
+# Bandit Level 25 → Level 26
+ssh bandit25@bandit.labs.overthewire.org -p 2220
+cat /etc/passwd
+# found that bandit26 and bandit32 is not /bin/bash, not like the others
+cat /usr/bin/showtext
+##!/bin/sh
+#
+#export TERM=linux
+#
+#exec more ~/text.txt
+#exit 0
+# go to https://gtfobins.github.io/gtfobins/more/ and check how to break more
+ssh bandit26@bandit.labs.overthewire.org -p 2220 -i bandit26.private
+# found that !/bin/bash doesnt work, then click v into vi mode, and then go to https://gtfobins.github.io/gtfobins/vi/ to check how to break vi
+whoami
+# bandit26
+cat /etc/bandit_pass/bandit26
+# c7GvcKlw9mC7aUQaPx7nwFstuAIBw1o1
+
+# Bandit Level 26 → Level 27
+# as we are in bandit26 already, can directly ll to check home folder, and then found ./bandit27-do
+./bandit27-do cat /etc/bandit_pass/bandit27
+# YnQpBuifNMas1hcUFk70ZmqkhUU2EuaS
+
+# Bandit Level 27 → Level 28
+ssh bandit27@bandit.labs.overthewire.org -p 2220
+mkdir /tmp/test4
+cd /tmp/test4
+git clone ssh://bandit27-git@localhost:2220/home/bandit27-git/repo
+ll repo
+cat README
+# AVanL161y9rsbcJIsFHuw35rjaOM19nR
+
+# Bandit Level 28 → Level 29
+ssh bandit28@bandit.labs.overthewire.org -p 2220
+mkdir /tmp/test4
+cd /tmp/test4
+git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo
+cd repo
+cat README.md
+# found there is no password in it, then try to check branch
+git branch -a
+# no extra branch, then check log
+git log
+# add missing data looks like the thing i need
+git checkout abcff758fa6343a0d002a1c0add1ad8c71b88534
+cat README.md
+# tQKvmcwNYcFS6vmPHIUSI3ShmsrQZK8S
+
+# Bandit Level 29 → Level 30
+ssh bandit29@bandit.labs.overthewire.org -p 2220
+mkdir /tmp/test4
+cd /tmp/test4
+git clone ssh://bandit29-git@localhost:2220/home/bandit29-git/repo
+cd repo
+cat README.md
+git branch -a
+git checkout dev
+cat README.md
+# xbhV3HpNGlTIdnjUrdAlPzc2L6y9EOnS
+rm -r -f /tmp/test4
+
+# Bandit Level 30 → Level 31
+ssh bandit30@bandit.labs.overthewire.org -p 2220
+mkdir /tmp/test4
+cd /tmp/test4
+git clone ssh://bandit30-git@localhost:2220/home/bandit30-git/repo
+cd repo
+cat README.md
+# nothing
+git branch -a
+# nothing
+git log
+# nothing
+git tag
+# secret
+git show secret
+# OoffzGDlzhAlerFJ2cAiz1D41JW1Mhmt
+cd ..
+rm -r -f repo
+
+# Bandit Level 31 → Level 32
+git clone ssh://bandit31-git@localhost:2220/home/bandit31-git/repo
+cd repo
+cat README.md
+# This time your task is to push a file to the remote repository.
+#
+# Details:
+#     File name: key.txt
+#     Content: 'May I come in?'
+#     Branch: master
+echo "May I come in?" > key.txt
+rm .gitignore
+git add .
+git commit -m "test"
+git push
+# rmCBvG56y58BXzv98yZGdO7ATVL5dW8y
+rm -r -f test4
+
+# Bandit Level 32 → Level 33
+ssh bandit32@bandit.labs.overthewire.org -p 2220
+# https://david-varghese.medium.com/overthewire-bandit-level-32-level-33-bebdbb36ffb5
+$0
+whoami
+cat /etc/bandit_pass/bandit33
+# odHo63fHiFqcWWJG9rLiLDtPm45KzUKy
+
+# Bandit Level 33 → Level 34
+ssh bandit33@bandit.labs.overthewire.org -p 2220
+ll
+cat README.txt
+# end of bandit
