@@ -1,0 +1,16 @@
+Level 0
+access http://natas0.natas.labs.overthewire.org/ with natas0:natas0
+F12 and see <!--The password for natas1 is g9D9cREhslqBKtcA2uocGHPfMZVzeFK6 --> in source  code
+
+level1
+access https://natas1.natas.labs.overthewire.org/ with natas1:g9D9cREhslqBKtcA2uocGHPfMZVzeFK6
+didnt close F12 so see <!--The password for natas2 is h4ubbcXrWqsTo7GGnnUMLppXbOogfBZ7 --> directly
+
+level2
+access https://natas2.natas.labs.overthewire.org/ with natas2:h4ubbcXrWqsTo7GGnnUMLppXbOogfBZ7
+from source code, found that there is a https://natas2.natas.labs.overthewire.org/files/pixel.png
+then try accessing https://natas2.natas.labs.overthewire.org/files/, bingo, then open users.txt
+got natas3:G6ctbMJ5Nb4cbFwhpMPSvxGHhQ7I6W8Q
+
+level3
+access https://natas3.natas.labs.overthewire.org/ with natas3:G6ctbMJ5Nb4cbFwhpMPSvxGHhQ7I6W8Q
