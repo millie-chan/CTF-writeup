@@ -13,4 +13,122 @@ then try accessing https://natas2.natas.labs.overthewire.org/files/, bingo, then
 got natas3:G6ctbMJ5Nb4cbFwhpMPSvxGHhQ7I6W8Q
 
 level3
-access https://natas3.natas.labs.overthewire.org/ with natas3:G6ctbMJ5Nb4cbFwhpMPSvxGHhQ7I6W8Q
+access http://natas3.natas.labs.overthewire.org/ with natas3:G6ctbMJ5Nb4cbFwhpMPSvxGHhQ7I6W8Q
+from comment, it mentioned "Not even Google will find it"
+googling "stop google from crawling website" and you will find it is about robots.txt or some http headers
+check that no headers reveals password of level4, then search the robots.txt
+then found Disallow: /s3cr3t/
+access https://natas3.natas.labs.overthewire.org/s3cr3t/ then will find the users.txt again
+got natas4:tKOcJIbzM4lTs8hbCmzn5Zr4434fGZQm
+
+level4
+access http://natas4.natas.labs.overthewire.org/ with natas4:tKOcJIbzM4lTs8hbCmzn5Zr4434fGZQm
+website shows below message:
+Access disallowed. You are visiting from "" while authorized users should come only from "http://natas5.natas.labs.overthewire.org/"
+from last sentence, it looks like about header referer
+but when i set Referer: http://natas5.natas.labs.overthewire.org/ in the request, it replies server timeout
+it is because the request muse be sent to http://natas4.natas.labs.overthewire.org/index.php
+got Z0NsrtIkJoKALBCLi5eqFfcRN82Au2oD
+
+level5
+access http://natas5.natas.labs.overthewire.org/ with natas5:Z0NsrtIkJoKALBCLi5eqFfcRN82Au2oD
+got Access disallowed. You are not logged in
+and then found that there is a response cookie loggedin=0
+change it to loggedin=1 and refresh, got fOIvE0MDtPTgRhqmmvvAOt2EfXR6uQgR
+
+level6
+access http://natas6.natas.labs.overthewire.org/ with natas6:fOIvE0MDtPTgRhqmmvvAOt2EfXR6uQgR
+there is a view sourcecode then we must read it, as below:
+<?
+include "includes/secret.inc";
+    if(array_key_exists("submit", $_POST)) {
+        if($secret == $_POST['secret']) {
+        print "Access granted. The password for natas7 is <censored>";
+    } else {
+        print "Wrong secret";
+    }
+    }
+?>
+access http://natas6.natas.labs.overthewire.org/includes/secret.inc then got the secret as FOEIUWGHFEEUHOFUOIU
+return to homepage and submit, got jmxSiH3SP6Sonf8dv66ng8v1cIEdjXWr
+
+level7
+access http://natas7.natas.labs.overthewire.org/ with natas7:jmxSiH3SP6Sonf8dv66ng8v1cIEdjXWr
+there is home and about, and from comment there is <!-- hint: password for webuser natas8 is in /etc/natas_webpass/natas8 -->
+you click either home or about, then will find it sets the query as the page name, looks like local file inclusion
+access https://natas7.natas.labs.overthewire.org/index.php?page=/etc/natas_webpass/natas8
+then got a6bZCNYwdKqN5cGP11ZdtPg0iImQQhAB
+
+level8
+access http://natas8.natas.labs.overthewire.org/ with natas8:a6bZCNYwdKqN5cGP11ZdtPg0iImQQhAB
+got secret box and view source code again
+<?
+$encodedSecret = "3d3d516343746d4d6d6c315669563362";
+function encodeSecret($secret) {
+    return bin2hex(strrev(base64_encode($secret)));
+}
+if(array_key_exists("submit", $_POST)) {
+    if(encodeSecret($_POST['secret']) == $encodedSecret) {
+    print "Access granted. The password for natas9 is <censored>";
+    } else {
+    print "Wrong secret";
+    }
+}
+?>
+what we have to do is reverse it, grep an online php runner and try print base64_decode(strrev(hex2bin($encodedSecret)))
+got Sda6t0vkOPkM8YeOZkAGVhFoaplvlJFd
+
+level9
+access http://natas9.natas.labs.overthewire.org/ with natas9:Sda6t0vkOPkM8YeOZkAGVhFoaplvlJFd
+always view source code
+<?
+$key = "";
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+if($key != "") {
+    passthru("grep -i $key dictionary.txt");
+}
+?>
+type any word and then submit, and it will search the content in dictionary.txt for you
+try search natas10, natas, password, ":" nothing special, then looks like we just inject "a users.txt"
+"gerp -i a users.txt dictionary.txt" would grep both a in users.txt and dictionary.txt, but cant get the thing i want
+try "a /etc/natas_webpass/natas10"
+then got /etc/natas_webpass/natas10:D44EcsFkLxPIkAAKLosx8z3hxX1Z4MCE
+
+level 10
+access http://natas10.natas.labs.overthewire.org/ with natas10:D44EcsFkLxPIkAAKLosx8z3hxX1Z4MCE
+similar to last one but filter special characters
+<?
+$key = "";
+
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+
+if($key != "") {
+    if(preg_match('/[;|&]/',$key)) {
+        print "Input contains an illegal character!";
+    } else {
+        passthru("grep -i $key dictionary.txt");
+    }
+}
+?>
+um...doesnt affect my solution, got /etc/natas_webpass/natas11:1KFqoJXi6hRaPluAmk8ESDW4fSysRoIg
+
+level 11
+access http://natas11.natas.labs.overthewire.org/ with natas11:1KFqoJXi6hRaPluAmk8ESDW4fSysRoIg
+there is a cookie called data, and then a phrase in website "Cookies are protected with XOR encryption"
+code is long. what it tries to do is read showpassword and bgcolor from cookie, if showpassword=yes, then show the password
+there is a key in xor_encrypt
+XOR is usually about xor the other side to get the key
+original cookie is from base64_encode(xor_encrypt(json_encode(array( "showpassword"=>"no", "bgcolor"=>"#ffffff"))));
+original cookie value is MGw7JCQ5OC04PT8jOSpqdmkgJ25nbCorKCEkIzlscm5oKC4qLSgubjY=
+calculate base64_encode(json_encode(array( "showpassword"=>"no", "bgcolor"=>"#ffffff")));
+plain cookie value is eyJzaG93cGFzc3dvcmQiOiJubyIsImJnY29sb3IiOiIjZmZmZmZmIn0=
+plain XOR key = original => plain XOR original = key
+Use CyberChef, base64 decode plain cookie value then XOR original, got key = KNHL
+copy the xor_encrypt in php online runner with key = 'KNHL'
+get a new cookie value by running base64_encode(xor_encrypt(json_encode(array( "showpassword"=>"yes", "bgcolor"=>"#ffffff"))));
+update cookie and then refresh, be careful not to have query 
+got YWqo0pjpcXzSIl5NMAVxg12QxeC1w9QG
