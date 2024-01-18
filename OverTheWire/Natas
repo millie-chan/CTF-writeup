@@ -132,3 +132,7 @@ copy the xor_encrypt in php online runner with key = 'KNHL'
 get a new cookie value by running base64_encode(xor_encrypt(json_encode(array( "showpassword"=>"yes", "bgcolor"=>"#ffffff"))));
 update cookie and then refresh, be careful not to have query 
 got YWqo0pjpcXzSIl5NMAVxg12QxeC1w9QG
+
+level 12
+access http://natas12.natas.labs.overthewire.org/ with natas12:YWqo0pjpcXzSIl5NMAVxg12QxeC1w9QG
+read source code, can upload a file and then have the link of that file, looks like need to upload a php but failed
