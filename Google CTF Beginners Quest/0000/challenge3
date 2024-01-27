@@ -1,0 +1,12 @@
+Quest:
+rsâ£râ£enigmâ£â£aierheâ£iâ£gluucsclhetersntiâ£aâ£rlaâ£tâ£riayrgpetaiâ£diuâ£Fawhiho}sipatfyâ£ihrâ£aâ£rfaâ£pesâ£etohwreaâ£octtoneeâ£eihetTpxcdeghiâ£roâ£pedâ£yGaledemXToneepetlhtseghectnatanstâ£ripctiharaicsâ£foarsceeâ£ebrnâ£teâ£doemrrâ£c__ltcsaicsaâ£cooâ£wbrnâ£â£aranmeibti,haarhra,sipkltiâ£ci.ctstâ£aâ£lxtcnaenlkLeoakelXpohryâ£patakrntdâ£cilxsUâ£ineheâ£cwthersâ£rpoâ£narahhtrâ£aienlsrtrrâ£o.{rd___nXntiâ£â£ornrtoyrgoorsâ£te.ksipâ£â£crsâ£â£câ£pohelhgctnâ£ieâ£erntatecgâ£teeeAsuvesuX
+
+
+Analyze:
+first, there are so many strange letters, let's download the file and open with text editor(notepad++ in my case), some characters become squares
+second, because of the hint, search transposition cipher
+
+Solution:
+copy the text with squares and paste in this site https://www.dcode.fr/transposition-cipher, choose Try all permutations (bruteforce up to size 6) and keep spaces
+search flag and find any flag makes sense, which is as below
+Transposition␣ciphers␣are␣a␣type␣of␣encryption␣algorithm␣that␣works␣by␣rearranging␣the␣order␣of␣characters␣in␣a␣plaintext␣message.␣Unlike␣substitution␣ciphers,␣which␣replace␣characters␣with␣other␣characters,␣transposition␣ciphers␣keep␣all␣of␣the␣original␣characters␣intact.␣The␣ciphertext␣is␣created␣by␣rearranging␣the␣plaintext␣letters␣according␣to␣a␣predetermined␣rule␣or␣key.␣FLAG{caesar_would_have_liked_these_columns}XXXX
