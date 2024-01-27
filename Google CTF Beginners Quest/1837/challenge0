@@ -1,0 +1,13 @@
+Quest:
+..-. .-. --- --/-.   .   .--/-.-- --- .-. -.-/.. .   ..   -   .. ../..- ... .-/-   . ./.-.. --- -. -.. --- -./..-   -.   ..   -   .   -../-.- .. -. --. -.. --- --/. ..   .   ..-.   ..-   .   ...   -/- ---/.   .-..   -   . ..   .-   .. .   -/..-. .-.. .- --./{-   . ..   ....-   -.   ---   ....-   -   â¸º   ....-   -.   -   ..   .. .}/--- -./. .   . ..   -..   .   . ../--- ..-./...   .   -.   -..   .   . ../--. --- --- --. .-.. ./.. .   -   .-.
+
+Analyze:
+Most make sense decoder I found is https://morsedecoder.com/
+paste the code in right textarea and then got the plain text
+FROM NEW YORK IEITII USA TEE LONDON UNITED KINGDOM EIEFUEST TO ELTEIAIET FLAG #EI4NO4T#4NTII# ON EEEIDEEI OF SENDEEI GOOGLE IETR
+still some meaningless words, from hint, we need to try american morse as well
+
+Solution:
+for the word between two slashes, if there is continue spaces or the word doesnt make any sense, try american morse code
+https://morsecode.world/american/translator.html
+FROM NEW(amercian) YORK CITY(american) USA TO(american) LONDON UNITED(american) KINGDOM REQUEST(american) TO EXTRACT(american) FLAG{TR4N54TL4NTIC} ON ORDER(american) OF SENDER(american) GOOGLE CTF(american)
