@@ -1,0 +1,25 @@
+# Leviathan Level 0 → Level 1
+ssh leviathan0@leviathan.labs.overthewire.org -p 2223
+ls -al /etc/leviathan_pass
+found that only the user of that level can access that file
+as mentioned in task, check home directory
+ls -al /home
+you will find that every one could read and access(the x permission of direcory) leviathan* folder, let's access to level 0 first
+ls -al /home/leviathan0
+ls -al /home/leviathan0/.backup
+cat /home/leviathan0/.backup/bookmarks.html
+it's a large file, let's use grep
+cat /home/leviathan0/.backup/bookmarks.html | grep leviathan1
+the password for leviathan1 is PPIfmI1qsA
+
+# Leviathan Level 1 → Level 2
+ssh leviathan1@leviathan.labs.overthewire.org -p 2223
+ls -al /home/leviathan1
+there is a s in permission, go to google, it means we can use leviathan1 to run this program as if we were leviathan2
+  looks like we will need it to check the password in /etc/leviathan_pass/leviathan2
+cat /home/leviathan1/check
+it is a binary file, try grep first, nothing
+be brave to run it
+/home/leviathan1/check
+it shows "password:", then try leviathan1 password first
+then it returns "Wrong password, Good Bye ...", looks like it read the content of /etc/leviathan_pass/leviathan2
