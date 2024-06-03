@@ -23,3 +23,24 @@ be brave to run it
 /home/leviathan1/check
 it shows "password:", then try leviathan1 password first
 then it returns "Wrong password, Good Bye ...", looks like it read the content of /etc/leviathan_pass/leviathan2
+tried a long input, didnt work, so seems not related to buffer overflow
+gave up and go to google https://mayadevbe.me/posts/overthewire/leviathan/level2/
+there is a command called ltrace, which can show the call to shared library
+then we run ltrace /home/leviathan1/check
+after we type something such as test, we can see there is a line: strcmp("tes", "sex") 
+tes is the first three chars of test, let's try enter "bun" and then we get strcmp("bun", "sex") 
+finally we know the "password" is sex, after entering "sex", it returns a shell
+run whoami, confirm that we are leviathan2 now
+then cat /etc/leviathan_pass/leviathan2, got mEh5PNl10e
+---
+wait, if ltrace works, which means other reverse engineering tools should work too, let's try another one
+first, download the check file to local
+scp -P 2223 leviathan1@leviathan.labs.overthewire.org:/home/leviathan1/check .
+hardly have any experience on reverse engineering, let's follow https://null-byte.wonderhowto.com/how-to/reverse-engineering-with-radare2-a-quick-introduction-0165996/
+r2 check
+aa
+pdf @ sym.main
+not familiar with assembly, but before strcmp, we can see two variables, var_20h and var_24h
+we look into those "mov", var_20h is 'sex', get char put into var_24h and then var_23h then finally var_22h
+address from 8845dc to 88845de is the word, then goes to an end (mov byte [var_21h], 0)
+seems ltrace is more newbie-friendly XD
