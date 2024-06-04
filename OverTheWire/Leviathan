@@ -44,3 +44,46 @@ not familiar with assembly, but before strcmp, we can see two variables, var_20h
 we look into those "mov", var_20h is 'sex', get char put into var_24h and then var_23h then finally var_22h
 address from 8845dc to 88845de is the word, then goes to an end (mov byte [var_21h], 0)
 seems ltrace is more newbie-friendly XD
+
+# Leviathan Level 2 → Level 3
+ssh leviathan2@leviathan.labs.overthewire.org -p 2223
+ls -al
+  similar to last time, there is a setuid executable
+file printfile
+  similar to last time
+strings printfile
+  nothing stands out but this
+  *** File Printer ***
+  Usage: %s filename
+  You cant have that file...
+  /bin/cat %s
+./printfile
+  *** File Printer ***
+  Usage: ./printfile filename
+ltrace ./printfile /etc/leviathan_pass/leviathan3
+  __libc_start_main(0x80491e6, 2, 0xffffd684, 0 <unfinished ...>
+  access("/etc/leviathan_pass/leviathan3", 4)                   = -1
+  puts("You cant have that file..."You cant have that file...
+  )                            = 27
+  +++ exited (status 1) +++
+  googled access() function, https://www.gnu.org/software/libc/manual/html_node/Testing-File-Access.html
+  This function uses the real user and group IDs of the calling process, rather than the effective IDs, to check for access permission. 
+  As a result, if you use the function from a setuid or setgid program (see How an Application Can Change Persona), 
+  it gives information relative to the user who actually ran the program.
+ltrace ./printfile /etc/leviathan_pass/leviathan2
+  __libc_start_main(0x80491e6, 2, 0xffffd684, 0 <unfinished ...>
+  access("/etc/leviathan_pass/leviathan2", 4)                   = 0
+  snprintf("/bin/cat /etc/leviathan_pass/lev"..., 511, "/bin/cat %s", "/etc/leviathan_pass/leviathan2") = 39
+  geteuid()                                                     = 12002
+  geteuid()                                                     = 12002
+  setreuid(12002, 12002)                                        = 0
+  system("/bin/cat /etc/leviathan_pass/lev"...mEh5PNl10e
+   <no return ...>
+  --- SIGCHLD (Child exited) ---
+  <... system resumed> )                                        = 0
+  +++ exited (status 0) +++
+  there are two things looks helpful, firstly we can see the system command, secondly we can see the password of leviathan2
+./printfile /etc/leviathan_pass/leviathan2
+  You cant have that file...
+  but when we run without ltrace, it shows permission denied
+  it seems that the access checking use the real runner(leviathan2), but the system command use the file owner(leviathan3)
