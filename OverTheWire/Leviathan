@@ -86,4 +86,136 @@ ltrace ./printfile /etc/leviathan_pass/leviathan2
 ./printfile /etc/leviathan_pass/leviathan2
   You cant have that file...
   but when we run without ltrace, it shows permission denied
-  it seems that the access checking use the real runner(leviathan2), but the system command use the file owner(leviathan3)
+  it seems that the access() checking use the real runner(leviathan2), but the system() use the file owner(leviathan3)
+  then if we could use a space to separate the command, we could bypass the access 
+/bin/cat /etc/leviathan_pass/leviathan2 /etc/leviathan_pass/leviathan3
+  if we run this, we could see it try to cat leviathan3 as well
+  but we could not use "leviathan2 /etc/leviathan_pass/leviathan3" as filename because filename could not have slash
+  to get rid of slash, we could create symbolic soft link to /etc/leviathan_pass/leviathan3
+  to create soft link, we need to find which directory we have write permission, which is usually /tmp
+ls -al /
+  confirmed that every user has write permission of /tmp, although without read 
+mkdir /tmp/tmp20240605
+ln -s /etc/leviathan_pass/leviathan3 test
+touch '/tmp/tmp20240605/test dummy'
+  at this point, we created a file which namd "test dummy", and the final command would be "/bin/cat test dummy"
+./printfile "/tmp/tmp20240605/test dummy"
+ the first line is the password of leviathan3, which is Q0G8j4sakn
+
+# Leviathan Level 3 → Level 4
+ssh leviathan3@leviathan.labs.overthewire.org -p 2223
+ls -al
+./level3
+  try the original one first
+ltrace ./level3
+  __libc_start_main(0x80492bf, 1, 0xffffd6a4, 0 <unfinished ...>
+  strcmp("h0no33", "kakaka")                                    = -1
+  printf("Enter the password> ")                                = 20
+  fgets(Enter the password> dummy
+  "dummy\n", 256, 0xf7e2a620)                             = 0xffffd47c
+  strcmp("dummy\n", "snlprintf\n")                              = -1
+  puts("bzzzzzzzzap. WRONG"bzzzzzzzzap. WRONG
+  )                                    = 19
+  +++ exited (status 0) +++
+  like level 1-> 2, a strcmp with user input
+./level3, enter snlprintf
+  and then we got a shell
+whoami
+  leviathan4
+cat /etc/leviathan_pass/leviathan4
+  AgvropI4OA
+
+# Leviathan Level 4 → Level 5
+ssh leviathan4@leviathan.labs.overthewire.org -p 2223
+ls -al
+  there is a .trash directory which owner is root and group is leviathan4
+cd .trash
+ls -al
+./bin
+  01000101 01001011 01001011 01101100 01010100 01000110 00110001 01011000 01110001 01110011 00001010
+  go to https://www.rapidtables.com/convert/number/ascii-hex-bin-dec-converter.html, turn the binary to ascii text
+password is EKKlTF1Xqs
+
+# Leviathan Level 5 → Level 6
+ssh leviathan5@leviathan.labs.overthewire.org -p 2223
+ls -al
+./leviathan5
+  Cannot find /tmp/file.log
+  then let's try creating it
+touch /tmp/file.log
+ltrace ./leviathan5
+  ltrace ./leviathan5
+  __libc_start_main(0x8049206, 1, 0xffffd694, 0 <unfinished ...>
+  fopen("/tmp/file.log", "r")                                   = 0x804d1a0
+  fgetc(0x804d1a0)                                              = '\377'
+  feof(0x804d1a0)                                               = 1
+  fclose(0x804d1a0)                                             = 0
+  getuid()                                                      = 12005
+  setuid(12005)                                                 = 0
+  unlink("/tmp/file.log")                                       = 0
+  +++ exited (status 0) +++
+  fgetc <-- let's put a char in file
+echo "a" > /tmp/file.log
+ltrace ./leviathan5
+  __libc_start_main(0x8049206, 1, 0xffffd694, 0 <unfinished ...>
+  fopen("/tmp/file.log", "r")                                   = 0x804d1a0
+  fgetc(0x804d1a0)                                              = 'a'
+  feof(0x804d1a0)                                               = 0
+  putchar(97, 0x804a008, 0xf7c184be, 0xf7fbe4a0)                = 97
+  fgetc(0x804d1a0)                                              = '\n'
+  feof(0x804d1a0)                                               = 0
+  putchar(10, 0x804a008, 0xf7c184be, 0xf7fbe4a0a
+  )                = 10
+  fgetc(0x804d1a0)                                              = '\377'
+  feof(0x804d1a0)                                               = 1
+  fclose(0x804d1a0)                                             = 0
+  getuid()                                                      = 12005
+  setuid(12005)                                                 = 0
+  unlink("/tmp/file.log")                                       = 0
+  +++ exited (status 0) +++
+  it doesn't look like we could find the strcmp easily, let's make a very long string in the file
+exit
+scp -P 2223 leviathan5@leviathan.labs.overthewire.org:/home/leviathan5/leviathan5 .
+r2 leviathan5
+aa
+pdf @ sym.main
+  too long to put in here
+  there is no strcmp, the program only open /tmp/file.log then print everything in it
+  which means we need the symbolic softlink again, to make the hardcoded /tmp/file.log becomes /etc/leviathan_pass/leviathan6
+ln -s /etc/leviathan_pass/leviathan6 /tmp/file.log
+./leviathan5
+  YZ55XPVk2l
+
+# Leviathan Level 6 → Level 7
+ssh leviathan6@leviathan.labs.overthewire.org -p 2223
+ls -al
+./leviathan6
+  usage: ./leviathan6 <4 digit code>
+ltrace ./leviathan6 1234
+  __libc_start_main(0x80491d6, 2, 0xffffd694, 0 <unfinished ...>
+  atoi(0xffffd7d6, 0xf7fd6f90, 0xf7c184be, 0xf7fbe4a0)          = 1234
+  puts("Wrong"Wrong
+  )                                                 = 6
+  +++ exited (status 0) +++
+  hardly see anything useful
+scp -P 2223 leviathan6@leviathan.labs.overthewire.org:/home/leviathan6/leviathan6 .
+r2 leviathan6
+aa
+pdf @ sym.main
+  after the atoi, there is a "cmp dword [var_ch], eax", if not equal then will jump to Wrong
+  check var_ch, it appears before checking the argument length, "mov dword [var_ch], 0x1bd3"
+  find a converter to calculate from hex number 1bd3 to decimal number, result is 7123
+  https://www.rapidtables.com/convert/number/hex-to-decimal.html?x=1BD3
+ssh leviathan6@leviathan.labs.overthewire.org -p 2223
+./leviathan6 7123
+  got a shell
+whoami
+  leviathan7
+cat /etc/leviathan_pass/leviathan7
+  password is 8GpZ5f8Hze
+
+# Leviathan Level 7 → Level 8
+ssh leviathan7@leviathan.labs.overthewire.org -p 2223
+ls -al
+cat CONGRATULATIONS
+  end of game
