@@ -1,0 +1,103 @@
+# Krypton Level 0 → Level 1
+  base64 decode is easy, you could even use browser console tool to decode it.
+atob("S1JZUFRPTklTR1JFQVQ=")
+  KRYPTONISGREAT
+
+# Krypton Level 1 → Level 2
+ssh krypton1@krypton.labs.overthewire.org -p 2231
+cd /krypton/krypton1
+ls -al
+cat krypton2
+  YRIRY GJB CNFFJBEQ EBGGRA
+  it looks like substitution cipher related, can google caesar cipher or rot13
+  and bingo, it is rot13
+  LEVEL TWO PASSWORD ROTTEN
+
+# Krypton Level 2 → Level 3
+ssh krypton2@krypton.labs.overthewire.org -p 2231
+cd /krypton/krypton2
+ls -al
+cat krypton3
+  OMQEMDUEQMEK
+./encrypt
+  usage: encrypt foo  - where foo is the file containing the plaintext
+cat README
+  encrypt will read /krypton/krypton2/keyfile.dat and then write a result file
+  but we dont have write permission on /krypton/krypton2
+  therefore we need to create a folder in /tmp and run command there
+mkdir /tmp/temp20240606
+cd /tmp/temp20240606
+echo "ABCDEFGHIJKLMNOPQRSTUVWXYZ" > data
+ln -s /krypton/krypton2/keyfile.dat keyfile.dat
+/krypton/krypton2/encrypt data
+ls -al
+cat ciphertext
+  MNOPQRSTUVWXYZABCDEFGHIJKL
+  A->M is 12, which means this time is rot12, to revert it we need rot(26-12)
+  CAESARISEASY
+
+# Krypton Level 3 → Level 4
+ssh krypton3@krypton.labs.overthewire.org -p 2231
+cd /krypton/krypton3
+ls -al
+cat README
+  after reading README
+    1) we need to use found1, found2 and found3 to find the key
+    2) and then use the key to decode krypton4
+    3) there are 2 hint files but i dont want to read it
+  if you dont want to spend time on it, you can goolge some decipher which can calculate the possible key for you
+  such as https://www.dcode.fr/monoalphabetic-substitution and https://planetcalc.com/8047/
+cat found1
+cat found2
+cat found3
+  most of them are 5 chars, only 1 with 4 chars and 1 with 2 chars, not sure if we could count on them so ignore them first
+  my plan is, list the 5-char word I know and with similar chars, and then try to match the words in those 3 found files
+  THERE, THREE, THEIR, THINK, THING, WHERE
+  first, THERE vs THREE, which are same 5 chars with different position
+  i dont want to check all of them with my own eyes, let's write a js script to do it
+  https://jsfiddle.net/5an3wuLz/2/
+  analyze "thereVsWhere UKSNS WKSNS" first, the first two chars should match one of the thinkVsThing pairs
+  but no UK or WK prefix there, which means it possibly not correct
+  analyze "thereVsTheir JDSNY JDSYS", the first two chars are JD,
+  there are two pairs of them: "thinkVsThing JDSQV JDSQE" and "thinkVsThing JDSNB JDSNY", none of them match
+  but JDE really looks like THE...at the end we still need third party tool
+put found1 + found2 + found3 in either website mentioned above
+  got a passage with strange space
+  IN CRYPTOGRAPHY A CAESAR CIPHER ALSO KNOWN AS A CAESARS CIPHER
+  THE SHIFT CIPHER CAESARS CODE OR CAESAR SHIFT IS ONE OF THE SIMPLEST AND MOST WIDELY KNOWN ENCRYPTION TECHNIQUES
+  from https://en.wikipedia.org/wiki/Caesar_cipher
+  so the decryption key is BOIHGKNQVTWYURXZAJEMSLDFPC
+cat krypton4
+  KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS
+  WELLD ONETH ELEVE LFOUR PASSW ORDIS BRUTE
+  well done the level four password is brute
+  i did it other's brute force XD
+after reading the hint, what if we try https://crypto.interactive-maths.com/frequency-analysis-breaking-the-code.html
+  it's more difficult and time-consuming to solve by myself
+
+
+# Krypton Level 4 → Level 5
+ssh krypton4@krypton.labs.overthewire.org -p 2231
+cd /krypton/krypton4
+ls -al
+cat README
+  Vigenere Cipher
+  key length = 6
+  to be honest, without the correct place of spaces, can i really run the frequency-analysis to get the decrypted message?
+  https://www.dcode.fr/vigenere-cipher
+  decryption key is FREKEY
+cat krypton5
+  HCIKV RJOX
+  CLEAR TEXT
+
+# Krypton Level 5 → Level 6
+ssh krypton5@krypton.labs.overthewire.org -p 2231
+cd /krypton/krypton5
+ls -al
+cat README
+  really no idea how to run frequency-analysis
+  https://www.dcode.fr/vigenere-cipher
+  decryption key is KEYLENGTH
+cat krypton6
+  BELOS Z
+  RANDO M
